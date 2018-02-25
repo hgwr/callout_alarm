@@ -49,8 +49,9 @@ class AlarmController
   end
 
   def on_active
-    if speech_queue.first[:t] == current_hh_mm
-      line = speech_queue.shift
+    target_line_index = speech_queue.index { |line| line[:t] == current_hh_mm }
+    if target_line_index
+      line = speech_queue.slice![target_line_index]
       say line[:message]
     end
   end
@@ -87,7 +88,7 @@ class AlarmController
 
   def make_speech_queue
     @speech_queue = []
-    t = [data.start_time.clone, Time.now].max
+    t = data.start_time.clone
     while t <= data.finish_time
       timestr = t.strftime("%H:%M")
       message = natural_timestr(t)
