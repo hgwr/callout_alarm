@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+#
+# Usage: callout_alarm.rb 5 06:05 07:35
+#
+
+require File.expand_path('../../lib/alarm_data', __FILE__)
+
+interval_sec = ARGV[0]
+start_time_str = ARGV[1]
+end_time_str = ARGV[2]
+
+data = AlarmData.new(interval_sec, start_time_str, end_time_str)
+puts data.to_s
+
+
+# caffeinate -i -d -u -t 10
