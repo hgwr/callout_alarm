@@ -35,6 +35,7 @@ class AlarmController
   end
 
   def on_start_active
+    say "おはようございます。"
     start_caffeinate
     make_speech_queue
   end
