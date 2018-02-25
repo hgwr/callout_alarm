@@ -4,13 +4,16 @@
 #
 
 require File.expand_path('../../lib/alarm_data', __FILE__)
+require File.expand_path('../../lib/alarm_controller', __FILE__)
 
 interval_sec = ARGV[0]
 start_time_str = ARGV[1]
 end_time_str = ARGV[2]
 
 data = AlarmData.new(interval_sec, start_time_str, end_time_str)
-puts data.to_s
+data.valid? or exit 1
 
+controller = AlarmController.new(data)
+controller.start
 
 # caffeinate -i -d -u -t 10
