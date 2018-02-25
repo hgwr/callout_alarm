@@ -1,17 +1,19 @@
-class AlarmData
-  attr_accessor :interval_sec, :start_time_str, :end_time_str
+require 'time' # for Time#parse
 
-  def initialize(interval_sec, start_time_str, end_time_str)
-    @interval_sec = interval_sec.to_s.strip
+class AlarmData
+  attr_reader :interval_sec, :start_time_str, :finish_time_str
+
+  def initialize(interval_sec, start_time_str, finish_time_str)
+    @interval_sec = interval_sec.to_i
     @start_time_str = start_time_str.to_s.strip
-    @end_time_str = end_time_str.to_s.strip
+    @finish_time_str = finish_time_str.to_s.strip
   end
 
   def valid?
     # TODO
     has_error = false
     
-    unless interval_sec =~ /\A[0-9]+\z/
+    if interval_sec.nil? || interval_sec < 10
       STDERR.puts "invalid interval_sec: #{interval_sec}"
       has_error = true
     end
@@ -21,8 +23,8 @@ class AlarmData
       has_error = true
     end
 
-    unless end_time_str =~ /\A[0-9]+:[0-9]+\z/
-      STDERR.puts "invalid end_time_str: #{end_time_str}"
+    unless finish_time_str =~ /\A[0-9]+:[0-9]+\z/
+      STDERR.puts "invalid finish_time_str: #{finish_time_str}"
       has_error = true
     end
     
@@ -30,6 +32,18 @@ class AlarmData
   end
 
   def to_s
-    "interval_sec, start_time_str, end_time_str = #{interval_sec}, #{start_time_str}, #{end_time_str}"
+    "interval_sec, start_time_str, finish_time_str = #{interval_sec}, #{start_time_str}, #{finish_time_str}"
+  end
+
+  def date_str
+    Time.now.strftime("%Y-%m-%d")
+  end
+
+  def start_time
+    Time.parse(date_str + " " + start_time_str)
+  end
+
+  def finish_time
+    Time.parse(date_str + " " + finish_time_str)
   end
 end
