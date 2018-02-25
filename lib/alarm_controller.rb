@@ -1,5 +1,5 @@
 class AlarmController
-  attr_accessor :data, :state, :speech_queue
+  attr_accessor :data, :state, :speech_queue, :caffeinate_pid
   
   def initialize(data)
     @data = data
@@ -35,7 +35,30 @@ class AlarmController
   end
 
   def on_start_active
+    start_caffeinate
     make_speech_queue
+  end
+
+  def on_active
+    if speech_queue.first.t == current_hh_mm
+      line = speech_queue.pop
+      say line[:message]
+    end
+  end
+
+  def on_start_inactive
+    kill_caffeinate
+  end
+
+  def start_caffeinate
+    @caffeinate_pid = fork do
+      exec "caffeinate -i -d -u -t #{data.active_time_span_sec}"
+    end
+  end
+
+  def kill_caffeinate
+    Process.kill(:TERM, @caffeinate_pid)
+    @caffeinate_pid = nil
   end
 
   def current_hh_mm
@@ -46,17 +69,6 @@ class AlarmController
     `say -v Kyoko "#{str}"`
   end
   
-  def on_active
-    if speech_queue.first.t == current_hh_mm
-      line = speech_queue.pop
-      say line[:message]
-    end
-  end
-
-  def on_start_inactive
-    
-  end
-
   def natural_timestr(t)
     minutes = t.strftime("%M").sub(/^0/, '')
     hours = t.strftime("%H").sub(/^0/, '')

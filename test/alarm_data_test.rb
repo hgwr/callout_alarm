@@ -34,4 +34,9 @@ class AlarmDataTest < Test::Unit::TestCase
 
     assert !data.active_stage?(data.mktime_from("07:36"))
   end
+
+  def test_active_time_span_sec
+    data = AlarmData.new("300", "06:00", "07:00")
+    assert_equal 3600, data.active_time_span_sec
+  end
 end

@@ -54,4 +54,8 @@ class AlarmData
   def active_stage?(t = Time.now)
     start_time <= t && t <= finish_time
   end
+
+  def active_time_span_sec
+    finish_time - start_time
+  end
 end

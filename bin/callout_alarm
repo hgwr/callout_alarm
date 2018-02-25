@@ -15,5 +15,3 @@ data.valid? or exit 1
 
 controller = AlarmController.new(data)
 controller.start
-
-# caffeinate -i -d -u -t 10
