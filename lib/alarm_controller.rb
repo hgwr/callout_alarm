@@ -87,7 +87,7 @@ class AlarmController
 
   def make_speech_queue
     @speech_queue = []
-    t = data.start_time.clone
+    t = [data.start_time.clone, Time.now].max
     while t <= data.finish_time
       timestr = t.strftime("%H:%M")
       message = natural_timestr(t)
