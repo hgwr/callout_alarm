@@ -1,24 +1,24 @@
-# README
+# callout_alarm - Mac OS X 向け、時刻読み上げ目覚まし時計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## インストール
 
-Things you may want to cover:
+    $ git clone https://github.com/hgwr/callout_alarm.git
+    
+## 使用方法
 
-* Ruby version
+    $ cd callout_alarm
+    $ bin/callout_alarm "時刻の読み上げ間隔(秒)" "読み上げ開始時刻" "読み上げ終了時刻"
 
-* System dependencies
+## 実行例
 
-* Configuration
+    $ cd callout_alarm
+    $ bin/callout_alarm 120 07:00 08:01
 
-* Database creation
+## 終了方法
 
-* Database initialization
+Ctrl-C で終了してください。
 
-* How to run the test suite
+## テスト
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    $ cd callout_alarm
+    $ rake test
