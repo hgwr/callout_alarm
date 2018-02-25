@@ -56,6 +56,6 @@ class AlarmData
   end
 
   def active_time_span_sec
-    finish_time - start_time
+    (finish_time - start_time).to_i
   end
 end

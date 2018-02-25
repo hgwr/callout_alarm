@@ -15,55 +15,75 @@ class AlarmController
     state == :inactive
   end
 
+  def set_active
+    @state = :active
+  end
+
+  def set_inactive
+    @state = :inactive
+  end
+
   def start
     while true
       if data.active_stage?
         if inactive? 
-          state = :active
+          set_active
           on_start_active
         end
         on_active
       else
-        if !data.active_stage?
-          state = :inactive
+        if active?
+          set_inactive
           on_start_inactive
-        end        
+        end
       end
 
       sleep 1
     end
   end
 
+  def log(msg)
+    STDERR.puts current_hh_mm + " " + msg
+  end
+
   def on_start_active
+    log "on_start_active"
+    
     say "おはようございます。"
     start_caffeinate
     make_speech_queue
   end
 
   def on_active
-    if speech_queue.first.t == current_hh_mm
+    log "on_active"
+    
+    if speech_queue.first[:t] == current_hh_mm
       line = speech_queue.pop
       say line[:message]
     end
   end
 
   def on_start_inactive
+    log "on_start_inactive"
+    
     kill_caffeinate
   end
 
   def start_caffeinate
+    cmd = "caffeinate -i -d -u -t #{data.active_time_span_sec}"
+    puts cmd
     @caffeinate_pid = fork do
-      exec "caffeinate -i -d -u -t #{data.active_time_span_sec}"
+      # exec cmd
     end
   end
 
   def kill_caffeinate
-    Process.kill(:TERM, @caffeinate_pid)
+    # Process.kill(:TERM, @caffeinate_pid)
     @caffeinate_pid = nil
   end
 
   def current_hh_mm
-    Time.now('%H:%M')
+    Time.now.strftime('%H:%M')
   end
 
   def say(str)
