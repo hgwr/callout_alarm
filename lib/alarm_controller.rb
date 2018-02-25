@@ -51,7 +51,7 @@ class AlarmController
   def on_active
     target_line_index = speech_queue.index { |line| line[:t] == current_hh_mm }
     if target_line_index
-      line = speech_queue.slice![target_line_index]
+      line = speech_queue.slice!(target_line_index)
       say line[:message]
     end
   end
