@@ -21,4 +21,17 @@ class AlarmDataTest < Test::Unit::TestCase
     
     assert_equal "07:35", data.finish_time.strftime("%H:%M")
   end
+
+  def test_active_stage?
+    data = AlarmData.new("300", "06:05", "07:35")
+
+    assert !data.active_stage?(data.mktime_from("06:04"))
+
+    assert data.active_stage?(data.mktime_from("06:05"))
+    assert data.active_stage?(data.mktime_from("06:10"))
+    assert data.active_stage?(data.mktime_from("07:30"))
+    assert data.active_stage?(data.mktime_from("07:35"))
+
+    assert !data.active_stage?(data.mktime_from("07:36"))
+  end
 end

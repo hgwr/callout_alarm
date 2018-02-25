@@ -39,11 +39,19 @@ class AlarmData
     Time.now.strftime("%Y-%m-%d")
   end
 
+  def mktime_from(str)
+    Time.parse(date_str + " " + str)
+  end
+  
   def start_time
-    Time.parse(date_str + " " + start_time_str)
+    mktime_from(start_time_str)
   end
 
   def finish_time
-    Time.parse(date_str + " " + finish_time_str)
+    mktime_from(finish_time_str)
+  end
+
+  def active_stage?(t = Time.now)
+    start_time <= t && t <= finish_time
   end
 end
