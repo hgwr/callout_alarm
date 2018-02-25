@@ -42,43 +42,32 @@ class AlarmController
     end
   end
 
-  def log(msg)
-    STDERR.puts current_hh_mm + " " + msg
-  end
-
   def on_start_active
-    log "on_start_active"
-    
     say "おはようございます。"
     start_caffeinate
     make_speech_queue
   end
 
   def on_active
-    log "on_active"
-    
     if speech_queue.first[:t] == current_hh_mm
-      line = speech_queue.pop
+      line = speech_queue.shift
       say line[:message]
     end
   end
 
   def on_start_inactive
-    log "on_start_inactive"
-    
     kill_caffeinate
   end
 
   def start_caffeinate
     cmd = "caffeinate -i -d -u -t #{data.active_time_span_sec}"
-    puts cmd
     @caffeinate_pid = fork do
-      # exec cmd
+      exec cmd
     end
   end
 
   def kill_caffeinate
-    # Process.kill(:TERM, @caffeinate_pid)
+    Process.kill(:TERM, @caffeinate_pid)
     @caffeinate_pid = nil
   end
 
