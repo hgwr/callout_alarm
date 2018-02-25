@@ -4,6 +4,9 @@
 
     $ git clone https://github.com/hgwr/callout_alarm.git
     
+Mac OS X のシステム環境設定の「省エネルギー」の「スケジュール...」で、
+起床時刻に「起動またはスリープ解除」が起きるようにします。
+    
 ## 使用方法
 
     $ cd callout_alarm
