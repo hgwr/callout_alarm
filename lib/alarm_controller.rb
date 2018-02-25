@@ -38,20 +38,37 @@ class AlarmController
     make_speech_queue
   end
 
+  def current_hh_mm
+    Time.now('%H:%M')
+  end
+
+  def say(str)
+    `say -v Kyoko "#{str}"`
+  end
+  
   def on_active
+    if speech_queue.first.t == current_hh_mm
+      line = speech_queue.pop
+      say line[:message]
+    end
   end
 
   def on_start_inactive
+    
+  end
+
+  def natural_timestr(t)
+    minutes = t.strftime("%M").sub(/^0/, '')
+    hours = t.strftime("%H").sub(/^0/, '')
+    "時刻は#{hours}時#{minutes}分です。"    
   end
 
   def make_speech_queue
     @speech_queue = []
-    t = data.start_time
-    while t < data.finish_time
+    t = data.start_time.clone
+    while t <= data.finish_time
       timestr = t.strftime("%H:%M")
-      minutes = t.strftime("%M").sub(/^0/, '')
-      hours = t.strftime("%H").sub(/^0/, '')
-      message = "時刻は#{hours}時#{minutes}分です。"
+      message = natural_timestr(t)
       @speech_queue.push({ t: timestr, message: message })
       t += data.interval_sec
     end
