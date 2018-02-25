@@ -1,14 +1,19 @@
 # callout_alarm - Mac OS X 向け、時刻読み上げ目覚まし時計
 
+時刻の読み上げは say コマンドによって行われます。
+
+読み上げ開始時刻と終了時刻のあいだは caffeinate コマンドが実行され、
+マシンがスリープしないようになっています。
+
 ## インストール
 
-    $ git clone https://github.com/hgwr/callout_alarm.git
-    
+    $ git clone https://github.com/hgwr/callout_alarm.git    
+
 Mac OS X のシステム環境設定の「省エネルギー」の「スケジュール...」で、
 起床時刻に「起動またはスリープ解除」が起きるようにします。
 
 スピーカーのボリューム等もあらかじめ適切な音量になるように設定しておきます。
-    
+
 ## 使用方法
 
     $ cd callout_alarm
